@@ -3,13 +3,14 @@ package com.smart.event.back_end.database.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED) // enables joined inheritance
 public class User {

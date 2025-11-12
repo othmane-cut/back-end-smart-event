@@ -3,6 +3,8 @@ package com.smart.event.back_end.database.entities;
 import com.smart.event.back_end.database.entities.enums.Gender;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+
 import java.util.List;
 
 @Entity
@@ -10,7 +12,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Table(name = "members")
 @PrimaryKeyJoinColumn(name = "user_id") // links Member to User table
 public class Member extends User {
