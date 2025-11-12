@@ -3,8 +3,6 @@ package com.smart.event.back_end.database.entities;
 import com.smart.event.back_end.database.entities.enums.EventStatus;
 import com.smart.event.back_end.database.entities.enums.EventType;
 import com.smart.event.back_end.database.entities.enums.EventVisibility;
-import com.smart.event.back_end.database.entities.interfaces.SocialNetwork;
-
 
 
 import jakarta.persistence.*;
