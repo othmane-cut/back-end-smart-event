@@ -28,10 +28,10 @@ public class UserService {
     @Autowired
     private EmailService emailService;
 
-    public String registerUser(String username, String email, String password,String lastName) {
+    public String registerUser(String username, String email, String password) {
         User user = new User();
-        user.setFirstName(username);
-        user.setLastName(lastName);
+        user.setUserName(username);
+
         user.setEmail(email);
         user.setPassword(new BCryptPasswordEncoder().encode(password));
 
@@ -93,7 +93,5 @@ public class UserService {
         return "Mot de passe réinitialisé avec succès.";
     }
 
-    public String registerUser(String username, String email, String password) {
-        return null;
-    }
+
 }

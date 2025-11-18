@@ -15,6 +15,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+
+
+
+import org.springframework.util.AntPathMatcher;
+
+
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
@@ -24,18 +30,24 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtil jwtUtil;
 
+    private final AntPathMatcher pathMatcher = new AntPathMatcher();
+
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain chain)
             throws ServletException, IOException {
 
-        // ✅ Ignorer les routes d'authentification
-        if (request.getRequestURI().startsWith("/api/auth/")) {
+        String path = request.getRequestURI();
+
+        // 🔥 Ignore ALL authentication routes
+        if (pathMatcher.match("/api/auth/**", path)) {
             chain.doFilter(request, response);
             return;
         }
 
+        // 🔐 Read Authorization header
         final String authorizationHeader = request.getHeader("Authorization");
-
         String username = null;
         String jwt = null;
 
@@ -44,19 +56,30 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             try {
                 username = jwtUtil.extractUsername(jwt);
             } catch (Exception e) {
-                // Token invalide
+                // invalid token → we just continue, no crash
             }
         }
 
+        // 🔐 Validate JWT & set security context
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+
             if (jwtUtil.validateToken(jwt, username)) {
                 UsernamePasswordAuthenticationToken authToken =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                        new UsernamePasswordAuthenticationToken(
+                                userDetails,
+                                null,
+                                userDetails.getAuthorities()
+                        );
+
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
+
         chain.doFilter(request, response);
     }
 }
+

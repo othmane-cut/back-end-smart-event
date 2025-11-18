@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 
         @Override
         public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-            User user = userRepository.findByfirstName(username)
+            User user = userRepository.findByUserName(username)
                     .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
             if (!user.isEnabled()) {
