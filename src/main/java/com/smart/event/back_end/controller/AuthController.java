@@ -31,7 +31,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
-        String response = userService.registerUser(request.getUsername(), request.getEmail(), request.getPassword());
+        String response = userService.registerUser(request.getUserName(), request.getEmail(), request.getPassword());
         return ResponseEntity.ok(response);
     }
 
@@ -58,7 +58,7 @@ public class AuthController {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            request.getUsername(),
+                            request.getUserName(),
                             request.getPassword()
                     )
             );
@@ -70,7 +70,8 @@ public class AuthController {
                     .body(Map.of("error", "Invalid username or password"));
         }
 
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUserName());
+
         final String jwt = jwtUtil.generateToken(userDetails);
 
         return ResponseEntity.ok(new JwtResponse(jwt));

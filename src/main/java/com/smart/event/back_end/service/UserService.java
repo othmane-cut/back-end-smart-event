@@ -31,7 +31,6 @@ public class UserService {
     public String registerUser(String username, String email, String password) {
         User user = new User();
         user.setUserName(username);
-
         user.setEmail(email);
         user.setPassword(new BCryptPasswordEncoder().encode(password));
 

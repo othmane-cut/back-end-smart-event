@@ -2,13 +2,13 @@ package com.smart.event.back_end.dtos.authantification;
 
 
 public class RegisterRequest {
-    private String username;
+    private String userName;
     private String email;
     private String password;
 
     // Getters
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
     public String getEmail() {
@@ -20,8 +20,8 @@ public class RegisterRequest {
     }
 
     // Setters
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String username) {
+        this.userName = username;
     }
 
     public void setEmail(String email) {
