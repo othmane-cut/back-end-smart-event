@@ -33,6 +33,7 @@ public class UserService {
         user.setUserName(username);
         user.setEmail(email);
         user.setPassword(new BCryptPasswordEncoder().encode(password));
+        user.setEnabled(true);
 
         userRepository.save(user);
 
